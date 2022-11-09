@@ -1,0 +1,87 @@
+\documentclass[name=Mehul\ Arora, andrewid=mehul21066, course=CSE121, num=1]{homework}
+
+\usepackage{hw-shortcuts}
+
+\begin{document}
+    
+\problem{1}
+Given twelve coins, eleven or twelve of which are identical. If one is different, we don't know whether it is heavier or lighter than the others. 
+
+\begin{claim}
+    We can devise a method to use a balance at most three times to determine if there is a unique coin, and if there is, to isolate it and determine whether it is heavier or lighter relative to the others.
+\end{claim}
+\begin{proof}
+    There are multiple weighing designs that can be used to solve this problem. One such design is as follows:
+    \begin{enumerate}
+        \item Set aside four coins.
+        \item Weigh the remaining eight coins in two groups of four. 
+        \begin{enumerate}
+            \item If the two groups weigh the same, then the four coins set aside may have the different coin.
+            \begin{enumerate}
+                \item Take any of the coins on the balance as a test coin.
+                \item From the group set aside, set aside one coin and take the other three
+                \item Weigh the test coin and one of the three coins on one side and the other two on the other side.
+                \item If the balance is balanced, then the coin set aside can be compared with the test coin to find out if it is different, and if it is, then if it is heavier or lighter.
+                \item Else, the different coin is either the one with the test coin or one of the two on the other side. Note the leaning of the scales. Compare the two on one side with each other to find out which one is different. If the scale is balanced, the other coin is different, otherwise the one leaning in the direction of the earlier leaning noted is the different one.
+            \end{enumerate}
+            \item Else, the different coin is in one of the two groups of four.
+            \begin{enumerate}
+                \item Take two coins out of the heavier side. Split the four on the lighter side into two and pair each group of two with one of the coins left on the heavier side, and now compare them
+                \item If the balance is balanced, the leftover two coins have the different coin. Weigh any one of them against one of the good coins to find out which one is different and whether it is heavier or lighter.
+                \item If the scale is unbalanced, take the lighter side and compare the two coins from the original lighter group. If the scale is balanced, the other coin paired with the coins on the heavier scale in the last measurement is the different one and heavier, else the coin that is lighter is the different one.
+            \end{enumerate}
+        \end{enumerate}
+    \end{enumerate}
+\end{proof}
+
+\separator\problem{2}
+Given thirteen coins, twelve or thirteen of which are identical. If one is different, we don't know whether it is heavier or lighter than the others. 
+
+\begin{claim}
+    We can NOT devise a method to use a balance at most three times to determine if there is a unique coin, and if there is, to isolate it and determine whether it is heavier or lighter relative to the others.
+\end{claim}
+\begin{proof}
+    First we'll need to prove using induction that, given a test coin which is of the same weight as most coins, the maximum number of coins that can be weighed and checked using a balance at most $w$ times is $(3^{w}-1)/2$.
+    \begin{itemize}[label=$\lozenge$, itemsep=2ex]
+        \item \emph{Induction Principle}: If $C_{t}(w)=\frac{3^{w}-1}{2}$ is true for all $w\leq k$, then $C_{t}(k+1)=\frac{3^{k+1}-1}{2}$ is true.
+        \item \emph{Base Case}: $C_{t}(1)=\frac{3^{1}-1}{2}=1$ is true. For a given coin, we can compare it with a test coin to find if it is the same weight, heavier or lighter.
+        \item \emph{Inductive Step}: Assume that $C_{t}(w)=\frac{3^{w}-1}{2}$ is true for all $w\leq k$. We need to prove that $C_{t}(k+1)=\frac{3^{k+1}-1}{2}$ is true.
+        \begin{proof}
+            We can use the following weighing design to prove that $C_{t}(k+1)=\frac{3^{k+1}-1}{2}$ is true.
+            \begin{enumerate}
+                \item Set aside $(3^{k}-1)/2$ coins.
+                \item Now we have $3^{k}$ coins. We can divide them into $2$ groups of $(3^{k}-1)/2$ and $(3^{k}+1)/2$ coins respectively.
+                \item Now place them on the scales with the test coin on one side with the $(3^{k}-1)/2$ sized group and the other group on the other side.
+                \begin{enumerate}
+                    \item If the two groups are equal, then the test coin is the same weight as the other coins. Hence we can check the remaining $(3^{k}-1)/2$ coins in $k$ steps (from the Inductive Hypothesis).
+                    \item Else, there exists a coin which is heavier or lighter than the test coin in either of the groups being weighed. In this case, we can take one of the coins in the leftover group as a test coin and use it to solve for the remaining $(3^k-1)/2$ coins in $k$ steps as shown in problem 1.
+                \end{enumerate}
+            \end{enumerate}
+        \end{proof}
+        \item \emph{Conclusion}: $C_{t}(w)=\frac{3^{w}-1}{2}$ is true for all $w\geq 1$.
+    \end{itemize}
+    Now, we can prove that the maximum number of coins $C(w)$ that can be weighed using a balance at most $w$ times is $(3^{w}-3)/2$. We can prove this by induction on $w$. 
+    \begin{itemize}[label=$\lozenge$, itemsep=2ex]
+        \item \emph{Induction Principle}: If $C(w)=\frac{3^{w}-3}{2}$ is true for all $w\leq k$, then $C(k+1)=\frac{3^{k+1}-3}{2}$ is true.
+        \item \emph{Base Case}: $C(1)=\frac{3^{1}-3}{2}=0$ is true. For any number of coins, even if we determine the existence of a unique coin, we cannot isolate it using only one weighing, as there is no knowledge of whether the unique coin is heavier or lighter than the others.
+        \item \emph{Inductive Step}: Assume that $C(w)=\frac{3^{w}-3}{2}$ is true for all $w\leq k$. We need to prove that $C(k+1)=\frac{3^{k+1}-3}{2}$ is true.
+        \begin{proof}
+            We can split the coins into 3 groups of $(3^k-1)/2$ each. We measure one group against the other.
+            \begin{enumerate}
+                \item The balance is balanced. In this case, we know that all the coins on the balance right now are good, and we can take one to be a test coin, and hence solve for the remaining $(3^k-1)/2$ coins in $k$ steps (from the previous proof).
+                \item The balance is unbalanced. In this case, we know that there is a unique coin which is heavier or lighter than the other coins.
+                \begin{enumerate}
+                    \item In this case, we can take one of the coins as a test coin and use it to solve for the remaining $(3^k-1)/2$ coins in $k1$ steps as shown in problem 1.
+                \end{enumerate}
+            \end{enumerate}
+        \end{proof}
+    \item \emph{Conclusion}: $C(w)=\frac{3^{w}-3}{2}$ is true for all $w\geq 1$. Hence, the maximum number of coins that can be weighed using a balance at most $w$ times is $(3^{w}-3)/2$.
+    \end{itemize}
+    Hence, we can say that for $w=3$ that is three weighings allowed, the maximum number of coins that can be weighed is $C(3)=\frac{3^{3}-3}{2}=12$. This is less than the number of coins we have, which is 13. Hence, we cannot devise a method to use a balance at most three times to determine if there is a unique coin, and if there is, to isolate it and determine whether it is heavier or lighter relative to the others.
+\end{proof}
+\begin{thebibliography}{9}
+    \bibitem{texbook}
+    Mario Martelli and Gerald Gannon, Weighing coins: Divide and conquer to detect a counterfeit, The College Mathematics Journal, Vol.28,
+No.5, pp.365–367, 1997.
+\end{thebibliography}
+\end{document}
